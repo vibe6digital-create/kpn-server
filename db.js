@@ -1,8 +1,12 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-// Use /tmp on Render (writable), local data/ dir otherwise
-const dataDir = process.env.RENDER ? '/tmp' : path.join(__dirname, 'data');
+// Glitch uses .data/, Render uses /tmp, local uses data/
+const dataDir = process.env.PROJECT_DOMAIN
+  ? path.join(__dirname, '.data')
+  : process.env.RENDER
+    ? '/tmp'
+    : path.join(__dirname, 'data');
 const dbPath = path.join(dataDir, 'app.db');
 const db = new Database(dbPath);
 
